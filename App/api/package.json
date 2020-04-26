@@ -4,12 +4,17 @@
   "description": "API for reminders app",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Iulia Baciu <iuliaiuliabaciu@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "knex": "^0.21.0",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }
