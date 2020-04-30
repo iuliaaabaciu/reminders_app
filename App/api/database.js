@@ -1,16 +1,16 @@
 const config = require('./config');
 const knex = require("knex")(config);
 
-exports.createUsers = (name, familyName, email) => 
-  knex("users").insert({ name, familyName, email });
-
-exports.reminderManager = (userId, category, dateCreated, sendEmailDate, sendEmailHour) => 
-  knex("reminders").insert({ userId, category, dateCreated, sendEmailDate, sendEmailHour });
-
 exports.listUsers = () => 
-  knex.select("id", "name", "familyName", "email")
-  .from("users");  
+  knex.select("id", "firstName", "lastName", "email")
+  .from("users");    
+
+exports.createUsers = (name, lastName, email) => 
+  knex("users").insert({ name, lastName, email });
+
+exports.createReminder = (userId, category, dateScheduled) => 
+  knex("reminders").insert({ userId, category, dateScheduled });
 
 exports.listReminders = () => 
-  knex.select('id', 'userId', 'category', 'dateCreated', 'sendEmailDate', 'sendEmailHour')
+  knex.select('id', 'userId', 'category', 'dateCreated', 'scheduledDate')
   .from('reminders');

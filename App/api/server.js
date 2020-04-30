@@ -9,4 +9,10 @@ app.get('/reminders', async (req, res) => {
   res.json(listReminders);
 })
 
+app.post('/reminders', async(req, res) => {
+  const { userId, category, dateScheduled } = req.body;
+  await database.createReminder(userId, category, dateScheduled);
+  res.json(); 
+})
+
 app.listen(8080)

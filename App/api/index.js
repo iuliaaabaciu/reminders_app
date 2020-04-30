@@ -21,7 +21,7 @@ const listUsers = () =>
   .from("users");  
 
 const listReminders = () => 
-  knex.select('id', 'userId', 'category', 'dateCreated', 'sendEmailDate', 'sendEmailHour')
+  knex.select('id', 'userId', 'category', 'dateCreated', 'scheduledDate')
   .from('reminders');
 
 
