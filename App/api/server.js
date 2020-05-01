@@ -15,4 +15,18 @@ app.post('/reminders', async(req, res) => {
   res.json(); 
 })
 
+// delete reminder
+app.delete('/reminders/:id', async(req, res) => {
+  const id = req.params.id;
+  await database.deleteReminder(id);
+  res.json();
+})
+
+app.delete('/reminders/deleteAllReminders/:userId', async(req, res) => {
+  const userId = req.params.userId;
+  await database.deleteAllReminders(userId);
+  res.json();
+})
+
+
 app.listen(8080)
