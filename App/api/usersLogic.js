@@ -7,22 +7,20 @@ exports.listUsers = () =>
   .from("users");    
 
 exports.register = async (firstName, lastName, email, password) => {
-  const hash = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 12);
   return knex("users").insert({ 
     firstName: firstName, 
     lastName: lastName, 
     email: email,
-    password: hash, 
+    password: hashedPassword, 
   });
 }
 
-exports.login = async(email, password) => {
-  const users = await knex
-    .select()
-    .from("users")
-    .where("email", "=", email);
+exports.login = async (email, password) => {
+  const users = await knex('users')
+    .where("email", email);
   
-  if(this.listUsers.length === 0) throw new Error("Sorry, your email was not found"); 
+  if(users.length === 0) throw new Error("Sorry, your email was not found"); 
 
   const user = users[0];
 

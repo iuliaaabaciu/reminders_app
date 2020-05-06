@@ -5,7 +5,7 @@ const usersDatabase = require('./usersLogic');
 const app = express();
 app.use(express.json());
 
-//REMINDERS
+// REMINDERS
 app.get('/reminders', async (req, res) => {
   const listReminders = await remindersDatabase.listReminders();
   res.json(listReminders);
@@ -30,12 +30,19 @@ app.delete('/reminders/deleteAllReminders/:userId', async(req, res) => {
   res.json();
 })
 
-//USERS
-app.post('/reminders/registration', async(req, res) => {
+// USERS
+app.post('/registration', async(req, res) => {
   const { firstName, lastName, email, password } = req.body;
   await usersDatabase.register(firstName, lastName, email, password);
-  res.json(); 
+  res.json();
 })
 
+app.get('/login', async(req, res) => {
+  const { email, password } = req.body;
+  await usersDatabase.login(email, password)
+        .then("Login was successful")
+        .catch(error => console.log('THIS IS THE ERROR', error));
+  res.json('success');
+});
 
 app.listen(8080)
