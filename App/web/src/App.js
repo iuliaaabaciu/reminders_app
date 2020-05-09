@@ -1,9 +1,11 @@
 import React from 'react';
+import Filter from './Filter';
+import RemindersList from './RemindersList';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-class Reminders extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,10 +35,14 @@ class Reminders extends React.Component {
           dateFormat="MMMM d, yyyy h:mm aa"
         />
 
-        
+        <select><option value="">Choose city...</option><option value="New York">New York</option><option value="London">London</option><option value="Amsterdam">Amsterdam</option><option value="Cluj">Cluj</option><option value="Paris">Paris</option></select>
+
+        <RemindersList /> 
+
+        <Filter />
       </>
     )
   }
 }
 
-export default Reminders;
+export default App;

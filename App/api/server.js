@@ -12,8 +12,8 @@ app.get('/reminders', async (req, res) => {
 })
 
 app.post('/reminders', async(req, res) => {
-  const { userId, category, dateScheduled } = req.body;
-  await remindersDatabase.createReminder(userId, category, dateScheduled);
+  const { userId, text, category, dateScheduled } = req.body;
+  await remindersDatabase.createReminder(userId, text, category, dateScheduled);
   res.json(); 
 })
 
