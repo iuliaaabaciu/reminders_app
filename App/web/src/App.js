@@ -1,7 +1,10 @@
 import React from 'react';
 import Filter from './Filter';
 import RemindersList from './RemindersList';
+import { createReminder, listReminders } from './reminders';
 import DatePicker from "react-datepicker";
+import RemindersCategory from './RemindersCategory'
+import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -12,11 +15,31 @@ class App extends React.Component {
       inputValue: '',
       reminders: [],
       dateScheduled: new Date(),
+      categroy: '',
     }
   }
 
-  dateChange = date => {
-    this.setDateScheduled({ dateScheduled: date })
+  async componentDidMount() {
+    const reminders = await listReminders();
+    this.setState({ reminders: reminders });
+  }
+
+  onDateChange = (date) => {
+    this.setState({ dateScheduled: date })
+  }
+
+  onInputChange = (event) => {
+    const inputValue = event.target.value;
+    this.setState({ inputValue: inputValue })
+  }
+
+  onCategorySelect = (event) => { 
+    this.setState({ categroy: event.target.value})
+  }
+
+  onButtonClick = async (event) => {
+    const date = moment(this.state.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
+    await createReminder(3, this.state.inputValue, this.state.categroy, date);
   }
 
   render() {
@@ -24,10 +47,13 @@ class App extends React.Component {
       <>
         <input type="text" 
           placeholder="Create your reminder"
+          value={this.state.value}
+          onChange={this.onInputChange}
+          onKeyPress={this.onInputKeypres}
         />
 
         <DatePicker selected={this.state.dateScheduled}
-          onChange={ this.setDateScheduled }
+          onChange={ this.onDateChange }
           showTimeSelect
           timeFormat="HH:mm"
           timeIntervals={5}
@@ -35,9 +61,13 @@ class App extends React.Component {
           dateFormat="MMMM d, yyyy h:mm aa"
         />
 
-        <select><option value="">Choose city...</option><option value="New York">New York</option><option value="London">London</option><option value="Amsterdam">Amsterdam</option><option value="Cluj">Cluj</option><option value="Paris">Paris</option></select>
+        <RemindersCategory value={this.state.categroy} 
+          onChange={this.onCategorySelect}
+        />
 
-        <RemindersList /> 
+        <button onClick={this.onButtonClick}>Create reminder</button>
+
+        <RemindersList remid={this.state.reminders}/> 
 
         <Filter />
       </>
