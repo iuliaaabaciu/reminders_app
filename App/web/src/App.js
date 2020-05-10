@@ -61,7 +61,8 @@ class App extends React.Component {
           dateFormat="MMMM d, yyyy h:mm aa"
         />
 
-        <RemindersCategory value={this.state.categroy} 
+        <RemindersCategory 
+          value={this.state.categroy} 
           onChange={this.onCategorySelect}
         />
 
