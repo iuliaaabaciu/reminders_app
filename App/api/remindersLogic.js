@@ -1,8 +1,8 @@
 const config = require('./config');
 const knex = require("knex")(config);
 
-exports.createReminder = (userId, category, dateScheduled) => 
-  knex("reminders").insert({ userId, category, dateScheduled });
+exports.createReminder = (userId, text, category, dateScheduled) => 
+  knex("reminders").insert({ userId, text, category, dateScheduled });
 
 exports.listReminders = () => 
   knex.select('id', 'userId', 'category', 'dateCreated', 'dateScheduled')

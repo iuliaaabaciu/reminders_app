@@ -5,6 +5,9 @@ const usersDatabase = require('./usersLogic');
 const app = express();
 app.use(express.json());
 
+const cors = require("cors");
+app.use(cors())
+
 // REMINDERS
 app.get('/reminders', async (req, res) => {
   const listReminders = await remindersDatabase.listReminders();
@@ -45,4 +48,4 @@ app.get('/login', async(req, res) => {
   res.json('success');
 });
 
-app.listen(8080)
+app.listen(8080);
