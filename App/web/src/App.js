@@ -16,6 +16,7 @@ class App extends React.Component {
       reminders: [],
       dateScheduled: new Date(),
       categroy: '',
+      filter: 'TODAY',
     }
   }
 
@@ -42,7 +43,34 @@ class App extends React.Component {
     await createReminder(3, this.state.inputValue, this.state.categroy, date);
   }
 
+  setFilterToToday = () => {
+    this.setState({ filter: "TODAY" });
+  }
+
+  setFilterToThisWeek = () => {
+    this.setState({ filter: "THIS WEEK" });
+  }
+  
+  setFilterToAll = () => {
+    this.setState({ filter: "ALL" });
+  }
+
+  filterReminders = (reminders, filter) => {
+    const currentDate = moment().format("YYYY-MM-DD HH:MM:SS");
+    // dateScheduled = moment(reminders.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
+
+    if (filter === 'ALL') {
+      return reminders;
+    }
+ 
+    if ( filter === 'TODAY' ) {
+      return reminders.filter((element) => moment(element.dateScheduled).format("YYYY-MM-DD HH:MM:SS").diff(currentDate, 'days') <= 1)
+    }
+  }
+
   render() {
+    const filteredReminders = this.filterReminders(this.state.reminders, this.state.filter);
+
     return(
       <>
         <input type="text" 
@@ -68,7 +96,7 @@ class App extends React.Component {
 
         <button onClick={this.onButtonClick}>Create reminder</button>
 
-        <RemindersList remid={this.state.reminders}/> 
+        <RemindersList filteredReminders={filteredReminders}/> 
 
         <Filter />
       </>

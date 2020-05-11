@@ -5,7 +5,7 @@ exports.createReminder = (userId, text, category, dateScheduled) =>
   knex("reminders").insert({ userId, text, category, dateScheduled });
 
 exports.listReminders = () => 
-  knex.select('id', 'userId', 'category', 'dateCreated', 'dateScheduled')
+  knex.select('id', 'userId', 'text', 'category', 'dateCreated', 'dateScheduled')
   .from('reminders');
 
 exports.deleteReminder = (id) => 
