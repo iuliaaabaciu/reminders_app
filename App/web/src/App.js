@@ -15,7 +15,7 @@ class App extends React.Component {
       inputValue: '',
       reminders: [],
       dateScheduled: new Date(),
-      categroy: '',
+      category: '',
       filter: 'TODAY',
     }
   }
@@ -35,12 +35,14 @@ class App extends React.Component {
   }
 
   onCategorySelect = (event) => { 
-    this.setState({ categroy: event.target.value})
+    this.setState({ category: event.target.value})
   }
 
   onButtonClick = async (event) => {
     const date = moment(this.state.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
-    await createReminder(3, this.state.inputValue, this.state.categroy, date);
+    await createReminder(3, this.state.inputValue, this.state.category, date);
+    const reminders = await listReminders();
+    this.setState({ reminders: reminders, inputValue: '' });
   }
 
   setFilterToToday = () => {
@@ -56,26 +58,35 @@ class App extends React.Component {
   }
 
   filterReminders = (reminders, filter) => {
-    const currentDate = moment().format("YYYY-MM-DD HH:MM:SS");
-    // dateScheduled = moment(reminders.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
+    const now = moment(new Date(), 'YYYY-MM-DD HH:MM:SS');
 
     if (filter === 'ALL') {
       return reminders;
     }
  
     if ( filter === 'TODAY' ) {
-      return reminders.filter((element) => moment(element.dateScheduled).format("YYYY-MM-DD HH:MM:SS").diff(currentDate, 'days') <= 1)
+      return reminders.filter((element) => { 
+          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
+          return (scheduled.diff(now, 'days') < 1)
+      })
+    }
+
+    if ( filter === 'THIS WEEK' ) {
+      return reminders.filter((element) => { 
+          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
+          return (scheduled.diff(now, 'days') < 8 && scheduled.diff(now, 'days') > 1)
+      })
     }
   }
 
   render() {
     const filteredReminders = this.filterReminders(this.state.reminders, this.state.filter);
-
+console.log(filteredReminders);
     return(
       <>
         <input type="text" 
           placeholder="Create your reminder"
-          value={this.state.value}
+          value={this.state.inputValue}
           onChange={this.onInputChange}
           onKeyPress={this.onInputKeypres}
         />
@@ -90,7 +101,7 @@ class App extends React.Component {
         />
 
         <RemindersCategory 
-          value={this.state.categroy} 
+          value={this.state.category} 
           onChange={this.onCategorySelect}
         />
 
@@ -98,7 +109,11 @@ class App extends React.Component {
 
         <RemindersList filteredReminders={filteredReminders}/> 
 
-        <Filter />
+        <Filter 
+          setFilterToAll={this.setFilterToAll}
+          setFilterToToday={this.setFilterToToday}
+          setFilterToThisWeek={this.setFilterToThisWeek}
+        />
       </>
     )
   }
