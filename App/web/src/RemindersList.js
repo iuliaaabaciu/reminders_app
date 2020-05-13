@@ -4,8 +4,11 @@ import moment from 'moment';
 const RemindersList = (props) => {
   const reminder = props.filteredReminders.map((element) =>
     <li key={element.id}>
-      {element.text}
-      {moment(element.dateScheduled).format('MMMM Do YYYY, h:mm')}
+      <input 
+        value={element.text}  //{moment(element.dateScheduled).format('MMMM Do YYYY, h:mm')}
+      />
+      {/* {moment(element.dateScheduled).format('MMMM Do YYYY, h:mm')} */}
+       
     </li>
   )
   return (

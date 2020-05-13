@@ -1,9 +1,8 @@
 import React from 'react';
 import Filter from './Filter';
 import RemindersList from './RemindersList';
+import CreateReminder from './CreateReminder';
 import { createReminder, listReminders } from './reminders';
-import DatePicker from "react-datepicker";
-import RemindersCategory from './RemindersCategory'
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -38,10 +37,11 @@ class App extends React.Component {
     this.setState({ category: event.target.value})
   }
 
-  onButtonClick = async (event) => {
-    const date = moment(this.state.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
-    await createReminder(3, this.state.inputValue, this.state.category, date);
+  onButtonClick = async (reminderObj) => {
+    const date = moment(reminderObj.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
+    await createReminder(3, reminderObj.inputValue, reminderObj.category, date);
     const reminders = await listReminders();
+    // alert('Reminder was successfully created');
     this.setState({ reminders: reminders, inputValue: '' });
   }
 
@@ -64,14 +64,14 @@ class App extends React.Component {
       return reminders;
     }
  
-    if ( filter === 'TODAY' ) {
+    if (filter === 'TODAY') {
       return reminders.filter((element) => { 
           const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
           return (scheduled.diff(now, 'days') < 1)
       })
     }
 
-    if ( filter === 'THIS WEEK' ) {
+    if (filter === 'THIS WEEK') {
       return reminders.filter((element) => { 
           const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
           return (scheduled.diff(now, 'days') < 8 && scheduled.diff(now, 'days') > 1)
@@ -81,34 +81,11 @@ class App extends React.Component {
 
   render() {
     const filteredReminders = this.filterReminders(this.state.reminders, this.state.filter);
-console.log(filteredReminders);
+
     return(
       <>
-        <input type="text" 
-          placeholder="Create your reminder"
-          value={this.state.inputValue}
-          onChange={this.onInputChange}
-          onKeyPress={this.onInputKeypres}
-        />
-
-        <DatePicker selected={this.state.dateScheduled}
-          onChange={ this.onDateChange }
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={5}
-          timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
-        />
-
-        <RemindersCategory 
-          value={this.state.category} 
-          onChange={this.onCategorySelect}
-        />
-
-        <button onClick={this.onButtonClick}>Create reminder</button>
-
-        <RemindersList filteredReminders={filteredReminders}/> 
-
+        <CreateReminder onButtonClick={this.onButtonClick} />
+        <RemindersList filteredReminders={filteredReminders} /> 
         <Filter 
           setFilterToAll={this.setFilterToAll}
           setFilterToToday={this.setFilterToToday}
