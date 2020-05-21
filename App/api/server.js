@@ -33,6 +33,15 @@ app.delete('/reminders/deleteAllReminders/:userId', async(req, res) => {
   res.json();
 })
 
+//update
+app.put('/reminders/updateReminder/:id', async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+
+  await remindersDatabase.updateReminder(id, text);
+  res.json();
+})
+
 // USERS
 app.post('/registration', async(req, res) => {
   const { firstName, lastName, email, password } = req.body;

@@ -17,3 +17,8 @@ exports.deleteAllReminders = (userId) =>
   knex("reminders")  
     .where({ userId })
     .del();
+
+exports.updateReminder = (id, text) => 
+  knex("reminders")
+    .where({ id })
+    .update({ text });    

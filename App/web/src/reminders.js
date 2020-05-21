@@ -13,3 +13,6 @@ export const createReminder = (userId, text, category, dateScheduled) => {
     dateScheduled: dateScheduled,
   })
 }
+
+export const updateReminder = (id, text) => 
+  axios.put(`http://localhost:8080/reminders/updateReminder/${id}`, { text });

@@ -25,7 +25,6 @@ class CreateReminder extends React.Component {
   }  
 
   someFn = () => {
-    console.log('this is bla', this.state)
     const remindersInfo = this.state;
     this.props.onButtonClick(remindersInfo);
   }

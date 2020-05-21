@@ -1,11 +1,10 @@
 import React from 'react';
 import Filter from './Filter';
-import RemindersList from './RemindersList';
 import CreateReminder from './CreateReminder';
-import { createReminder, listReminders } from './reminders';
+import RemindersList from './RemindersList';
+import { createReminder, listReminders, updateReminder } from './reminders';
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
-
 
 class App extends React.Component {
   constructor(props) {
@@ -24,25 +23,18 @@ class App extends React.Component {
     this.setState({ reminders: reminders });
   }
 
-  onDateChange = (date) => {
-    this.setState({ dateScheduled: date })
-  }
-
-  onInputChange = (event) => {
-    const inputValue = event.target.value;
-    this.setState({ inputValue: inputValue })
-  }
-
-  onCategorySelect = (event) => { 
-    this.setState({ category: event.target.value})
-  }
-
-  onButtonClick = async (reminderObj) => {
+  handleCreateReminder = async (reminderObj) => {
     const date = moment(reminderObj.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
     await createReminder(3, reminderObj.inputValue, reminderObj.category, date);
     const reminders = await listReminders();
     // alert('Reminder was successfully created');
     this.setState({ reminders: reminders, inputValue: '' });
+  }
+
+  handleUpdateReminder = async (updatedReminder) => {
+    await updateReminder(updatedReminder.reminderId, updatedReminder.reminderValue);
+    const reminders = await listReminders();
+    this.setState({ reminders: reminders, inputValue: '' }); 
   }
 
   setFilterToToday = () => {
@@ -67,7 +59,7 @@ class App extends React.Component {
     if (filter === 'TODAY') {
       return reminders.filter((element) => { 
           const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
-          return (scheduled.diff(now, 'days') < 1)
+          return (scheduled.diff(now, 'days') < 1);
       })
     }
 
@@ -84,8 +76,11 @@ class App extends React.Component {
 
     return(
       <>
-        <CreateReminder onButtonClick={this.onButtonClick} />
-        <RemindersList filteredReminders={filteredReminders} /> 
+        <CreateReminder onButtonClick={this.handleCreateReminder} />
+        <RemindersList 
+          filteredReminders={filteredReminders}
+          updateReminder={this.handleUpdateReminder}
+        /> 
         <Filter 
           setFilterToAll={this.setFilterToAll}
           setFilterToToday={this.setFilterToToday}
