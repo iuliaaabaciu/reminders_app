@@ -12,7 +12,6 @@ class App extends React.Component {
     this.state = {
       inputValue: '',
       reminders: [],
-      dateScheduled: new Date(),
       category: '',
       filter: 'TODAY',
     }
@@ -34,7 +33,7 @@ class App extends React.Component {
   handleUpdateReminder = async (updatedReminder) => {
     await updateReminder(updatedReminder.reminderId, updatedReminder.reminderValue);
     const reminders = await listReminders();
-    this.setState({ reminders: reminders, inputValue: '' }); 
+    this.setState({ reminders: reminders }); 
   }
 
   setFilterToToday = () => {
