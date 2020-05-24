@@ -13,7 +13,6 @@ class UpdateReminder extends React.Component {
 
   onInputChange = (event, id) => {
     this.setState({ reminderValue: event.target.value, reminderId: id})
-    console.log(this.props.dateScheduled)
   }
 
   onInputKeypress = () => {
@@ -21,8 +20,16 @@ class UpdateReminder extends React.Component {
     this.props.updateReminder(updatedReminder);
   }
 
-  onDateChange = (event, id) => {
-    this.setState({ dateScheduled: event.target.value, reminderId: id })
+  onDateChange = (date, id) => {
+    this.setState(
+      { dateScheduled: date, reminderId: id }, 
+      () => this.updateDate()
+    );
+  }
+  
+  updateDate = () => {
+    const updatedDateScheduled = this.state;
+    this.props.updateDateScheduled(updatedDateScheduled);
   }
 
   render() {
@@ -35,16 +42,14 @@ class UpdateReminder extends React.Component {
         />
         
         <DatePicker 
-         //selected={this.props.dateScheduled}
-          onChange={ this.onDateChange }
+          selected={ new Date(this.props.dateScheduled) }
+          onChange={ (date) => this.onDateChange(date, this.props.elementId) }
           showTimeSelect
           timeFormat="HH:mm"
           timeIntervals={5}
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
         />
-        
-        
       </>
     )
   }

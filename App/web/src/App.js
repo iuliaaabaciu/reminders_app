@@ -2,8 +2,9 @@ import React from 'react';
 import Filter from './Filter';
 import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
-import { createReminder, listReminders, updateReminder } from './reminders';
+import { createReminder, listReminders, updateReminder, updateDateScheduled } from './reminders';
 import moment from 'moment';
+import { compareAsc, format, differenceInCalendarDays } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 
 class App extends React.Component {
@@ -13,7 +14,7 @@ class App extends React.Component {
       inputValue: '',
       reminders: [],
       category: '',
-      filter: 'TODAY',
+      filter: 'ALL',
     }
   }
 
@@ -23,7 +24,7 @@ class App extends React.Component {
   }
 
   handleCreateReminder = async (reminderObj) => {
-    const date = moment(reminderObj.dateScheduled).format("YYYY-MM-DD HH:MM:SS");
+    const date = format(reminderObj.dateScheduled, 'yyyy-MM-dd hh:mm:ss');
     await createReminder(3, reminderObj.inputValue, reminderObj.category, date);
     const reminders = await listReminders();
     // alert('Reminder was successfully created');
@@ -34,6 +35,13 @@ class App extends React.Component {
     await updateReminder(updatedReminder.reminderId, updatedReminder.reminderValue);
     const reminders = await listReminders();
     this.setState({ reminders: reminders }); 
+  }
+
+  handleUpdateDateScheduled = async (updatedDate) => {
+    const dateScheduled = format(updatedDate.dateScheduled, "yyyy-MM-dd hh:mm:ss")
+    await updateDateScheduled(updatedDate.reminderId, dateScheduled);
+    const reminders = await listReminders();
+    this.setState({ reminders: reminders })
   }
 
   setFilterToToday = () => {
@@ -51,12 +59,14 @@ class App extends React.Component {
   filterReminders = (reminders, filter) => {
     const now = moment(new Date(), 'YYYY-MM-DD HH:MM:SS');
 
+
     if (filter === 'ALL') {
       return reminders;
     }
  
     if (filter === 'TODAY') {
       return reminders.filter((element) => { 
+        console.log(element.dateScheduled);
           const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
           return (scheduled.diff(now, 'days') < 1);
       })
@@ -79,6 +89,7 @@ class App extends React.Component {
         <RemindersList 
           filteredReminders={filteredReminders}
           updateReminder={this.handleUpdateReminder}
+          updateDateScheduled={this.handleUpdateDateScheduled}
         /> 
         <Filter 
           setFilterToAll={this.setFilterToAll}

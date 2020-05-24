@@ -42,6 +42,14 @@ app.put('/reminders/updateReminder/:id', async (req, res) => {
   res.json();
 })
 
+app.put('/reminders/updateDateScheduled/:id', async (req, res) => {
+  const { id } = req.params;
+  const { dateScheduled } = req.body;
+
+  await remindersDatabase.updateDateScheduled(id, dateScheduled);
+  res.json();
+})
+
 // USERS
 app.post('/registration', async(req, res) => {
   const { firstName, lastName, email, password } = req.body;

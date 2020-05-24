@@ -22,3 +22,8 @@ exports.updateReminder = (id, text) =>
   knex("reminders")
     .where({ id })
     .update({ text });    
+
+exports.updateDateScheduled = (id, dateScheduled) => 
+  knex("reminders")
+    .where({ id })
+    .update({ dateScheduled });    
