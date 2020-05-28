@@ -1,4 +1,8 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const accessToken = require('./accessToken');
+
 const remindersDatabase = require('./remindersLogic');
 const usersDatabase = require('./usersLogic');
 
@@ -51,18 +55,29 @@ app.put('/reminders/updateDateScheduled/:id', async (req, res) => {
 })
 
 // USERS
-app.post('/registration', async(req, res) => {
+app.post('/register', async(req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  await usersDatabase.register(firstName, lastName, email, password);
+  const hashedPassword = await bcrypt.hash(password, 12);
+  await usersDatabase.register(firstName, lastName, email, hashedPassword);
   res.json();
 })
 
-app.get('/login', async(req, res) => {
+app.post('/login', async(req, res) => {
   const { email, password } = req.body;
-  await usersDatabase.login(email, password)
-        .then("Login was successful")
-        .catch(error => console.log('THIS IS THE ERROR', error));
-  res.json('success');
+
+  const user = await usersDatabase.login(email);
+  if (!user) {
+    res.status(401).json( { message: 'Invalid credentials.' });
+    return;
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) { 
+    res.status(401).json({ message: 'Invalid password.' });
+  }
+
+  const authToken = accessToken.generateAccessToken(user);
+  res.json({ authToken, user });
 });
 
 app.listen(8080);

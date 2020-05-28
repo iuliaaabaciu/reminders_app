@@ -13,12 +13,11 @@ class CreateReminder extends React.Component {
 
   onInputChange = (event) => {
     const inputValue = event.target.value;
-    this.setState({ inputValue: inputValue })
+    this.setState({ inputValue: inputValue });
   }
 
   onDateChange = (date) => {
-    this.setState({ dateScheduled: date })
-    console.log('create', this.state.dateScheduled)
+    this.setState({ dateScheduled: date });
   } 
 
   onCategorySelect = (event) => { 
@@ -56,7 +55,6 @@ class CreateReminder extends React.Component {
         </select>  
 
         <button onClick={this.sendCreatedReminder}>Create reminder</button>
-
       </>
 
     )

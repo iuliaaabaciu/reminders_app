@@ -4,7 +4,7 @@ import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
 import { createReminder, listReminders, updateReminder, updateDateScheduled } from './reminders';
 import moment from 'moment';
-import { compareAsc, format, differenceInCalendarDays } from 'date-fns'
+import { toDate, parseISO, format, differenceInDays } from 'date-fns'
 import "react-datepicker/dist/react-datepicker.css";
 
 class App extends React.Component {
@@ -58,7 +58,9 @@ class App extends React.Component {
 
   filterReminders = (reminders, filter) => {
     const now = moment(new Date(), 'YYYY-MM-DD HH:MM:SS');
-
+    const fns = toDate(new Date(), 'yyyy-MM-dd hh:mm:ss');
+    console.log(typeof fns);
+    console.log( fns);
 
     if (filter === 'ALL') {
       return reminders;
@@ -66,8 +68,11 @@ class App extends React.Component {
  
     if (filter === 'TODAY') {
       return reminders.filter((element) => { 
-        console.log(element.dateScheduled);
           const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
+          const fnssch = parseISO(toDate(format(new Date(element.dateScheduled), 'yyyy-MM-dd hh:mm:ss')));
+          const d=differenceInDays(fnssch, now);
+          // console.log(typeof fnssch);
+          // console.log( d);
           return (scheduled.diff(now, 'days') < 1);
       })
     }
