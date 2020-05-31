@@ -4,8 +4,9 @@ const knex = require("knex")(config);
 exports.createReminder = (userId, text, category, dateScheduled) => 
   knex("reminders").insert({ userId, text, category, dateScheduled });
 
-exports.listReminders = () => 
+exports.listReminders = (userId) => 
   knex.select('id', 'userId', 'text', 'category', 'dateCreated', 'dateScheduled')
+  .where({ userId })
   .from('reminders');
 
 exports.deleteReminder = (id) => 
@@ -18,12 +19,12 @@ exports.deleteAllReminders = (userId) =>
     .where({ userId })
     .del();
 
-exports.updateReminder = (id, text) => 
+exports.updateReminder = (id, userId, text) => 
   knex("reminders")
-    .where({ id })
+    .where({ id, userId })
     .update({ text });    
 
-exports.updateDateScheduled = (id, dateScheduled) => 
+exports.updateDateScheduled = (id, userId, dateScheduled) => 
   knex("reminders")
-    .where({ id })
+    .where({ id, userId })
     .update({ dateScheduled });    

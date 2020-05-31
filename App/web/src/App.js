@@ -4,8 +4,9 @@ import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
 import { createReminder, listReminders, updateReminder, updateDateScheduled } from './reminders';
 import moment from 'moment';
-import { toDate, parseISO, format, differenceInDays } from 'date-fns'
+import { toDate, parseISO, format, differenceInDays } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
+import { deleteUser, deleteAuthToken } from "./session";
 
 class App extends React.Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class App extends React.Component {
 
   handleCreateReminder = async (reminderObj) => {
     const date = format(reminderObj.dateScheduled, 'yyyy-MM-dd hh:mm:ss');
-    await createReminder(3, reminderObj.inputValue, reminderObj.category, date);
+    console.log(this.state);
+    await createReminder(reminderObj.inputValue, reminderObj.category, date);
     const reminders = await listReminders();
     // alert('Reminder was successfully created');
     this.setState({ reminders: reminders, inputValue: '' });
@@ -85,6 +87,12 @@ class App extends React.Component {
     }
   }
 
+  logOut = () => {
+    deleteUser();
+    deleteAuthToken();
+    this.props.history.push("/signIn");
+  }
+
   render() {
     const filteredReminders = this.filterReminders(this.state.reminders, this.state.filter);
 
@@ -101,6 +109,8 @@ class App extends React.Component {
           setFilterToToday={this.setFilterToToday}
           setFilterToThisWeek={this.setFilterToThisWeek}
         />
+
+        <button onClick={this.logOut}>Log Out</button>
       </>
     )
   }
