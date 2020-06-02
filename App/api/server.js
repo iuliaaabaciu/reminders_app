@@ -11,6 +11,10 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors())
 
+app.get('/home', function(req, res) {
+  res.send('Welcome!');
+});
+
 // USERS
 app.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;

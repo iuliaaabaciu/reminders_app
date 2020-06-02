@@ -15,7 +15,6 @@ class Register extends React.Component {
   onFirstNameChange = (event) => 
     this.setState({ firstName: event.target.value });
 
-
   onLastNameChange = (event) => 
     this.setState({ lastName: event.target.value });
 
