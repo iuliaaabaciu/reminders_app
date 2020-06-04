@@ -12,7 +12,7 @@ const cors = require("cors");
 app.use(cors())
 
 app.get('/home', function(req, res) {
-  res.send('Welcome!');
+  res.json();
 });
 
 // USERS

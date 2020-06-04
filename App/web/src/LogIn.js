@@ -25,7 +25,6 @@ class LogIn extends React.Component {
       this.props.history.push('./reminders');
     } catch(e) {
       alert('Invalid credentials, please try again');
-      console.log(e);
     }
   }
 
