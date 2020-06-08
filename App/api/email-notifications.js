@@ -1,18 +1,20 @@
 const config = require('./config');
 const knex = require("knex")(config);
 const nodemailer = require('nodemailer');
-const express = require('express');
-const remindersDatabase = require('./remindersLogic');
-const usersDatabase = require('./usersLogic');
 const moment = require('moment');
+const schedule = require('node-schedule');
 
-const now = moment().format('YYYY-MM-DD hh:mm:ss');
+let rule = new schedule.RecurrenceRule();
+rule.hour = 8;
+//rule.minute = 7;
+
+const now = moment().format('YYYY-MM-DD 07:00:00');
 
 const query = () =>
   knex('users')
     .join('reminders', 'users.id', '=', 'reminders.userId')
     .select('users.email', 'reminders.text', 'reminders.category', 'reminders.dateScheduled')
-    .where('reminders.dateScheduled', '=', '2020-07-04 08:20:00');
+    .where('reminders.dateScheduled', '>', now);
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -29,22 +31,35 @@ const sendEmail = async () => {
 
   for (let i = 0; i < data.length; i++) {
 
-    let mailOptions = {
+    const output = `
+      <p>You have a new reminder set for today</p>
+      <h3>Reminder</h3>
+      <ul>  
+        <li>Category: <b>${data[i].category}</b></li>
+        <li>Scheduled at: <b>${data[i].dateScheduled}</b></li>
+        <li>Your reminder is: <b>${data[i].text}</b></li>
+      </ul>
+    `;
+    const mailOptions = {
       from: 'lurline.cremin@ethereal.email',
       to: data[i].email, 
-      subject: 'You have a new reminder', 
-      text: data[i].text, 
-      html: '"<b>Hello world?</b>"'
+      subject: 'New reminder alert', 
+      text: 'New reminder alert', 
+      html: output,
     };
    
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Message sent: %s', info.messageId);   
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    });    
-  }
-}  
+    let j = schedule.scheduleJob(rule, function() {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);   
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      });   
+    });
 
+    } 
+
+}  
 sendEmail();
+
