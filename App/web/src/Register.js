@@ -30,13 +30,37 @@ class Register extends React.Component {
   }
   render() {
     return (
-      <div>
-        <h1>Register</h1>
-        <input name="firstName" value={ this.state.firstName } onChange={ this.onFirstNameChange } />
-        <input name="lastName" value={ this.state.lastName } onChange={ this.onLastNameChange } />
-        <input name="email" value={ this.state.email } onChange={ this.onEmailChange } />
-        <input name="password" type="password" value={this.state.password} onChange={ this.onPasswordChange } />
-        <button onClick={ this.register }>Register</button>
+      <div className="container">
+        <h3>Please create an account</h3>
+        <input className="input" 
+          name="firstName" 
+          placeholder="First name" 
+          value={ this.state.firstName } 
+          onChange={ this.onFirstNameChange }
+        />
+        <input className="input" 
+          name="lastName" 
+          placeholder="Last name" 
+          value={ this.state.lastName } 
+          onChange={ this.onLastNameChange }
+        />
+        <input className="input" 
+          name="email" 
+          placeholder="Email" 
+          value={ this.state.email } 
+          onChange={ this.onEmailChange } 
+        />
+        <input className="input" 
+          name="password" 
+          placeholder="Password" 
+          type="password" 
+          value={this.state.password} 
+          onChange={ this.onPasswordChange }
+        />
+        <button className="register" 
+          onClick={ this.register }>
+          Register
+        </button>
       </div>
     )
   }
