@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { login } from './users';
 import { setUser, setAuthToken } from "./session";
 
@@ -30,18 +31,36 @@ class LogIn extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>LogIn</h1>
-        <input type="email" 
-          value={this.state.email}
-          onChange={this.onEmailChange}
-        />
-        <input type="password"
-          value={this.state.password}
-          onChange={this.onPasswordChange}
-        />
-        <button onClick={ this.onLogin }>Log In</button>
-      </div>
+      <>
+        <div className="nav">
+          <ul id="menu">
+            <li><Link to="/home" className="link">Homepage</Link></li>
+            <li><Link to="/login" className="link">Login</Link></li>
+          </ul>
+        </div>
+
+        <div className="container">
+          <div className="form">
+            <h3 className="title">LogIn</h3>
+            <input className="input"
+              placeholder="E-mail"
+              type="email" 
+              value={this.state.email}
+              onChange={this.onEmailChange}
+            />
+            <input className="input"
+              placeholder="password"
+              type="password"
+              value={this.state.password}
+              onChange={this.onPasswordChange}
+            />
+            <button className="button"
+              onClick={ this.onLogin }>
+              Log In
+            </button>
+          </div>
+        </div>
+      </>
     )
   }
 }

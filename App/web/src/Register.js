@@ -34,8 +34,8 @@ class Register extends React.Component {
       <>
         <div className="nav">
           <ul id="menu">
-            <li><Link to="/home">Homepage</Link></li>
-            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/home" className="link">Homepage</Link></li>
+            <li><Link to="/login" className="link">Login</Link></li>
           </ul>
         </div>
         

@@ -9,22 +9,25 @@ const Homepage = () => {
 
     return (
       <div>
-        <ul>
-          <h1>Welcome {firstname}, please proceede in order to create your reminder</h1>
-          <li><Link to="/reminders">Reminders</Link></li>
-        </ul>
+          <h1>Welcome back {firstname}, click <Link to="/reminders" className="link">here</Link> to create your reminder</h1>
       </div>
     )
   }
 
   return (
-    <div>
-      <ul>
-        <h1>Welcome, please proceede in order to create your reminder</h1>
-        <li><Link to="/register">Register</Link></li>
-        <li><Link to="/login">Login</Link></li>
-      </ul>
-    </div>
+    <>
+      <div className="container welcome">
+        <h1 className="title">Welcome, please proceed in order to create your reminder</h1>
+      </div>  
+      <div className="container">
+        <Link to="/register" className="link">
+          <button className="button">Register</button>
+        </Link>
+        <Link to="/login" className="link">
+          <button className="button">Log In</button>
+        </Link>
+      </div>  
+      </>
   );
 }
 
