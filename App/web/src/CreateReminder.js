@@ -31,14 +31,16 @@ class CreateReminder extends React.Component {
 
   render() {
     return (
-      <>
-        <input type="text" 
+      <div className="box">
+        <input className="input"
+          type="text" 
           placeholder="Create your reminder"
           value={this.state.inputValue}
           onChange={this.onInputChange}
         />
-
-        <DatePicker selected={this.state.dateScheduled}
+        
+        <DatePicker className="datepickerInputContainer datepickerWrapper input"
+          selected={this.state.dateScheduled}
           onChange={ this.onDateChange }
           showTimeSelect
           timeFormat="HH:mm"
@@ -47,15 +49,15 @@ class CreateReminder extends React.Component {
           dateFormat="MMMM d, yyyy h:mm aa"
         />
 
-        <select value={this.state.category} onChange={this.onCategorySelect}>
+        <select className="input" value={this.state.category} onChange={this.onCategorySelect}>
           <option value="">Choose a category</option>
           <option value="Personal">Personal</option>
           <option value="Work">Work</option>
           <option value="Books">Books</option>
         </select>  
 
-        <button onClick={this.sendCreatedReminder}>Create reminder</button>
-      </>
+        <button className="button" onClick={this.sendCreatedReminder}>Create reminder</button>
+      </div>
 
     )
   }

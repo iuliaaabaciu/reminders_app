@@ -35,13 +35,13 @@ class UpdateReminder extends React.Component {
   render() {
     return (
       <>
-        <input 
+        <input className="remList"
           defaultValue={this.props.defaultValue}
           onChange={(e) => this.onInputChange(e, this.props.elementId)}
           onKeyPress={this.onInputKeypress}
         />
         
-        <DatePicker 
+        <DatePicker className="datepickerInputContainer remList remDateUpdate"
           selected={ new Date(this.props.dateScheduled) }
           onChange={ (date) => this.onDateChange(date, this.props.elementId) }
           showTimeSelect

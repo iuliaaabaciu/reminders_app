@@ -15,16 +15,34 @@ body {
 
 .container {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;  
   margin-top: 80px;
+}
+
+@media all and (max-width: 800px) {
+  .container {
+    /* When on medium sized screens, we center it by evenly distributing empty space around items */
+    justify-content: space-around;
+  }
+}
+
+@media all and (max-width: 200px) {
+  .container {
+    flex-direction: column;
+
+  }
 }
 
 .welcome {
   animation: backInRight 1s ease-in;
-  width: 300px;
+  justify-content: center;
+  width: 440px;
+  margin: 10px; 
+  padding: 35px 30px;
+  background-color: rgb(246, 237, 246);
+  border-radius: 5px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);  
 }
 
 @keyframes backInRight {
@@ -63,7 +81,7 @@ body {
 }
 
 .input:focus {
-  border-bottom-color: #4a77e5;
+  border-color: #4a77e5;
 }
 
 .button {
@@ -71,9 +89,18 @@ body {
   background: #75d5a2;
   border-radius: 4px;
   border-color: #75d5a2;
+  cursor: pointer;
   display: block;
   font-size: 16px;
-  padding: 3px 5px;
+  padding: 7px 10px;
+}
+
+.btnDisplay {
+  display: inline;
+}
+
+p {
+  display: inline;
 }
 
 .nav {
@@ -95,7 +122,6 @@ ul#menu li {
 
 @media only screen and (max-width: 300px) {
   .nav {
- 
     top: 0;
     left: 0;  
     width: 100%;
@@ -112,10 +138,61 @@ ul#menu li {
 }   
 
 .link {
-  color: #666;
+  color: #246a73;
   text-decoration: none;
 }
 
-.link:hover {
-  color: #246a73;
+.linkDisplay {
+  padding: 30px;
 }
+
+.link:hover {
+  color: #1f2b45;
+}
+
+.logout {
+  float: right;
+  margin-right: 10px;
+}
+
+.box {
+  display: block;
+  width: 50%;
+  margin: 10px; 
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);    
+}
+
+.displayEvenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.datepickerInputContainer {
+  display: block;
+}
+
+.datepickerWrapper {
+  width: 100%;
+}
+
+.remList {
+  display: block;
+  width: 70%;
+  font-size: 16px;
+  border-bottom: 1px solid #a8d7dd;  
+  border-width: 0 0 1px 0;
+  padding-bottom: 3px; 
+  margin-bottom: 7px;
+  outline: none;
+}
+
+.remDateUpdate {
+  width: 100%;
+  font-size: 14px;
+  align-self: flex-end;
+}
+
+

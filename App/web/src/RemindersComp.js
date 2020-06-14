@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Filter from './Filter';
 import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
@@ -98,19 +99,26 @@ class RemindersComp extends React.Component {
 
     return(
       <>
-        <CreateReminder onButtonClick={this.handleCreateReminder} />
-        <RemindersList 
-          filteredReminders={filteredReminders}
-          updateReminder={this.handleUpdateReminder}
-          updateDateScheduled={this.handleUpdateDateScheduled}
-        /> 
-        <Filter 
-          setFilterToAll={this.setFilterToAll}
-          setFilterToToday={this.setFilterToToday}
-          setFilterToThisWeek={this.setFilterToThisWeek}
-        />
+        <div className="nav">
+          <ul id="menu">
+            <li><Link to="/home" className="link">Homepage</Link></li>
+            <button className="logout link" onClick={this.logOut}>Log Out</button>
+          </ul>
+        </div>  
 
-        <button onClick={this.logOut}>Log Out</button>
+        <div className="container">
+          <CreateReminder onButtonClick={this.handleCreateReminder} />
+          <RemindersList 
+            filteredReminders={filteredReminders}
+            updateReminder={this.handleUpdateReminder}
+            updateDateScheduled={this.handleUpdateDateScheduled}
+          /> 
+          <Filter
+            setFilterToAll={this.setFilterToAll}
+            setFilterToToday={this.setFilterToToday}
+            setFilterToThisWeek={this.setFilterToThisWeek}
+          />
+        </div>
       </>
     )
   }

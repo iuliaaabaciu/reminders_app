@@ -15,9 +15,11 @@ const RemindersList = (props) => {
     );
 
     return (
-      <ul>
-        {reminder}
-      </ul>
+      <div className="box">
+        <ul>
+          {reminder}
+        </ul>
+      </div>
     );
 }
 
