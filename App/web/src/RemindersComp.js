@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Filter from './Filter';
 import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
-import { createReminder, listReminders, updateReminder, updateDateScheduled } from './reminders';
+import { createReminder, listReminders, updateReminder, updateDateScheduled, deleteReminder } from './reminders';
 import moment from 'moment';
 import { toDate, parseISO, format, differenceInDays } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,7 +44,13 @@ class RemindersComp extends React.Component {
     const dateScheduled = format(updatedDate.dateScheduled, "yyyy-MM-dd hh:mm:ss")
     await updateDateScheduled(updatedDate.reminderId, dateScheduled);
     const reminders = await listReminders();
-    this.setState({ reminders: reminders })
+    this.setState({ reminders: reminders });
+  }
+
+  handleDeleteReminder = async (id) => {
+    await deleteReminder(id);
+    const reminders = await listReminders();
+    this.setState({ reminders: reminders });
   }
 
   setFilterToToday = () => {
@@ -112,6 +118,7 @@ class RemindersComp extends React.Component {
             filteredReminders={filteredReminders}
             updateReminder={this.handleUpdateReminder}
             updateDateScheduled={this.handleUpdateDateScheduled}
+            deleteReminder={this.handleDeleteReminder}
           /> 
           <Filter
             setFilterToAll={this.setFilterToAll}

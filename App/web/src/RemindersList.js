@@ -11,6 +11,7 @@ const RemindersList = (props) => {
             elementId={element.id}
             dateScheduled={element.dateScheduled}
           />
+          <button className="deleteBtn" onClick={() => props.deleteReminder(element.id)}>x</button>
         </li>
     );
 

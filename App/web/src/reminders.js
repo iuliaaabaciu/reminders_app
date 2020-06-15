@@ -28,3 +28,6 @@ export const updateDateScheduled = (id, dateScheduled) =>
     { dateScheduled },
     { headers: { authToken: getAuthToken() } }
   );
+
+export const deleteReminder = (id) => 
+  axios.delete(`http://localhost:8080/reminders/${id}`, {headers: { authToken: getAuthToken() }});  

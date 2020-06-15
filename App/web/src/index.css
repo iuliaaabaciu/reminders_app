@@ -1,13 +1,11 @@
 html, body {
   margin: 0;
   height: 100%;
-}
-
-body {
   background-size: 100% auto;
+  background-repeat: no-repeat;
   background: #fddbfd;   /* fallback for old browsers */
-  background: -webkit-linear-gradient(45deg, #fddbfd, #75d5a2);   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(45deg, #fddbfd, #75d5a2);   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(45deg, #fddbfd, #91d8b2);   /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(45deg, #fddbfd, #91d8b2);   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   color: #666;
@@ -186,13 +184,22 @@ ul#menu li {
   border-width: 0 0 1px 0;
   padding-bottom: 3px; 
   margin-bottom: 7px;
+  padding: 0;
   outline: none;
 }
 
 .remDateUpdate {
-  width: 100%;
+  width: 95%;
   font-size: 14px;
   align-self: flex-end;
+}
+
+.deleteBtn {
+  border: 1px solid #80b2b9;
+  border-radius: 3px;
+  background-color:#d6ede1;
+  padding: 1px 3px;
+  color: #1f2b45;
 }
 
 
