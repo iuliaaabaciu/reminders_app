@@ -9,6 +9,7 @@ class LogIn extends React.Component {
     this.state = {
       email: '',
       password: '',
+      loginError: '',
     }
   }
 
@@ -18,14 +19,14 @@ class LogIn extends React.Component {
   onPasswordChange = (event) => 
     this.setState({ password: event.target.value });
 
-  onLogin = async (event) => {
+  onLogin = async () => {
     try {
       const { user, authToken } = await login(this.state.email, this.state.password)
       setUser(user);
       setAuthToken(authToken);
       this.props.history.push('./reminders');
     } catch(e) {
-      alert('Invalid credentials, please try again');
+      this.setState({ loginError: 'Wrong credentials, please try again' });
     }
   }
 
@@ -35,7 +36,7 @@ class LogIn extends React.Component {
         <div className="nav">
           <ul id="menu">
             <li><Link to="/home" className="link">Homepage</Link></li>
-            <li><Link to="/login" className="link">Login</Link></li>
+            <li><Link to="/register" className="link">Register</Link></li>
           </ul>
         </div>
 
@@ -54,6 +55,7 @@ class LogIn extends React.Component {
               value={this.state.password}
               onChange={this.onPasswordChange}
             />
+            <span className="loginError">{ this.state.loginError }</span>
             <button className="button"
               onClick={ this.onLogin }>
               Log In

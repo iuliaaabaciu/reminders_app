@@ -59,24 +59,22 @@ app.delete('/reminders/:id', authMiddleware, async(req, res) => {
   res.json();
 })
 
-app.delete('/reminders/deleteAllReminders/:userId', authMiddleware, async(req, res) => {
+app.delete('/reminders', authMiddleware, async(req, res) => {
   const userId = req.params.userId;
   await remindersDatabase.deleteAllReminders(userId);
   res.json();
 })
 
 //update
-app.put('/reminders/updateReminder/:id', authMiddleware, async (req, res) => {
-  const { id } = req.params;
-  const { text } = req.body;
+app.put('/reminders/updateReminder', authMiddleware, async (req, res) => {
+  const { id, text } = req.body;
 
   await remindersDatabase.updateReminder(id, req.user.id, text);
   res.json();
 })
 
-app.put('/reminders/updateDateScheduled/:id', authMiddleware, async (req, res) => {
-  const { id } = req.params;
-  const { dateScheduled } = req.body; 
+app.put('/reminders/updateDateScheduled', authMiddleware, async (req, res) => {
+  const { id, dateScheduled } = req.body; 
 
   await remindersDatabase.updateDateScheduled(id, req.user.id, dateScheduled);
   res.json();

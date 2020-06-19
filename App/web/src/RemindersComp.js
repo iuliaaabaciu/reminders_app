@@ -77,18 +77,20 @@ class RemindersComp extends React.Component {
  
     if (filter === 'TODAY') {
       return reminders.filter((element) => { 
-          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
+          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD hh:mm:ss');
           const fnssch = parseISO(toDate(format(new Date(element.dateScheduled), 'yyyy-MM-dd hh:mm:ss')));
           const d=differenceInDays(fnssch, now);
           // console.log(typeof fnssch);
           // console.log( d);
           return (scheduled.diff(now, 'days') < 1);
+  
       })
     }
 
     if (filter === 'THIS WEEK') {
       return reminders.filter((element) => { 
-          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD HH:MM:SS');
+          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD hh:mm:ss');
+          console.log({scheduled})
           return (scheduled.diff(now, 'days') < 8 && scheduled.diff(now, 'days') > 1)
       })
     }

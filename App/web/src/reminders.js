@@ -18,14 +18,14 @@ export const createReminder = (text, category, dateScheduled) => {
 }
 
 export const updateReminder = (id, text) => 
-  axios.put(`http://localhost:8080/reminders/updateReminder/${id}`, 
-    { text },
+  axios.put(`http://localhost:8080/reminders/updateReminder`, 
+    { id, text },
     { headers: { authToken: getAuthToken() } }
   );
 
 export const updateDateScheduled = (id, dateScheduled) => 
-  axios.put(`http://localhost:8080/reminders/updateDateScheduled/${id}`, 
-    { dateScheduled },
+  axios.put(`http://localhost:8080/reminders/updateDateScheduled`, 
+    { id, dateScheduled },
     { headers: { authToken: getAuthToken() } }
   );
 
