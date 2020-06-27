@@ -55,7 +55,7 @@ class LogIn extends React.Component {
               value={this.state.password}
               onChange={this.onPasswordChange}
             />
-            <span className="loginError">{ this.state.loginError }</span>
+            <span className="error">{ this.state.loginError }</span>
             <button className="button"
               onClick={ this.onLogin }>
               Log In

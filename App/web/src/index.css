@@ -202,7 +202,7 @@ ul#menu li {
   color: #1f2b45;
 }
 
-.loginError {
+.error {
   display: block;
   color: red;
   font-weight: 500;

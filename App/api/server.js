@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const accessToken = require('./accessToken');
+const { body, validationResult, sanitizeBody } = require('express-validator');
 const authMiddleware = require('./authMiddleware');
 const remindersDatabase = require('./remindersLogic');
 const usersDatabase = require('./usersLogic');
@@ -16,11 +17,23 @@ app.get('/home', function(req, res) {
 });
 
 // USERS
-app.post('/register', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 12);
-  await usersDatabase.register(firstName, lastName, email, hashedPassword);
-  res.json();
+app.post('/register', [
+  body('email').isEmail(),
+  body('password').isLength({ min: 5 })
+    .withMessage('Password must be at least 5 chars long')
+    .matches(/^(\w+)/).withMessage('Password must be at least 5 chars long'),
+  body('firstName').matches(/^(\w+)/),
+  body('lastName').matches(/^(\w+)/),
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { firstName, lastName, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12);
+    await usersDatabase.register(firstName, lastName, email, hashedPassword);
+      res.json();
 })
 
 app.post('/login', async(req, res) => {
