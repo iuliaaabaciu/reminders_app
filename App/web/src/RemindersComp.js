@@ -5,7 +5,6 @@ import CreateReminder from './CreateReminder';
 import RemindersList from './RemindersList';
 import { createReminder, listReminders, updateReminder, updateDateScheduled, deleteReminder } from './reminders';
 import moment from 'moment';
-import { toDate, parseISO, format, differenceInDays } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { deleteUser, deleteAuthToken } from "./session";
 
@@ -26,8 +25,8 @@ class RemindersComp extends React.Component {
   }
 
   handleCreateReminder = async (reminderObj) => {
-    const date = format(reminderObj.dateScheduled, 'yyyy-MM-dd hh:mm:ss');
-    console.log(this.state);
+    const date = moment(reminderObj.dateScheduled).format('YYYY-MM-DD hh:mm:ss');
+    console.log({date})
     await createReminder(reminderObj.inputValue, reminderObj.category, date);
     const reminders = await listReminders();
     // alert('Reminder was successfully created');
@@ -41,7 +40,7 @@ class RemindersComp extends React.Component {
   }
 
   handleUpdateDateScheduled = async (updatedDate) => {
-    const dateScheduled = format(updatedDate.dateScheduled, "yyyy-MM-dd hh:mm:ss")
+    const dateScheduled = moment(updatedDate.dateScheduled).format('YYYY-MM-DD hh:mm:ss');
     await updateDateScheduled(updatedDate.reminderId, dateScheduled);
     const reminders = await listReminders();
     this.setState({ reminders: reminders });
@@ -66,32 +65,22 @@ class RemindersComp extends React.Component {
   }
 
   filterReminders = (reminders, filter) => {
-    const now = moment(new Date(), 'YYYY-MM-DD HH:MM:SS');
-    const fns = toDate(new Date(), 'yyyy-MM-dd hh:mm:ss');
-    console.log(typeof fns);
-    console.log( fns);
-
+    const now = moment().locale('ro').format('YYYY-MM-DD');
     if (filter === 'ALL') {
       return reminders;
     }
  
     if (filter === 'TODAY') {
-      return reminders.filter((element) => { 
-          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD hh:mm:ss');
-          const fnssch = parseISO(toDate(format(new Date(element.dateScheduled), 'yyyy-MM-dd hh:mm:ss')));
-          const d=differenceInDays(fnssch, now);
-          // console.log(typeof fnssch);
-          // console.log( d);
-          return (scheduled.diff(now, 'days') < 1);
-  
+      return reminders.filter((element) => {   
+          const scheduled = moment(element.dateScheduled).format('YYYY-MM-DD');
+          return (moment(now).isSame(scheduled));
       })
     }
 
     if (filter === 'THIS WEEK') {
       return reminders.filter((element) => { 
-          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD hh:mm:ss');
-          console.log({scheduled})
-          return (scheduled.diff(now, 'days') < 8 && scheduled.diff(now, 'days') > 1)
+          const scheduled = moment(element.dateScheduled, 'YYYY-MM-DD');
+          return (moment(now).isSame(scheduled, 'week'));
       })
     }
   }
