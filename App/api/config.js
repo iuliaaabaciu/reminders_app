@@ -3,7 +3,7 @@ const config = {
   connection: {
     host : 'localhost',
     user : 'developer',
-    password : 'Maimuta1993!',
+    password : 'helloworld1993',
     database : 'reminders'
   }
 }
